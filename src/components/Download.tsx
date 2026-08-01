@@ -70,7 +70,7 @@ export function Download() {
             <a
               className="btn btn--cta btn--lg"
               href={selected.url}
-              download={selected.filename}
+              rel="noopener noreferrer"
             >
               {t('ctaDownload')} v{selected.version}
             </a>

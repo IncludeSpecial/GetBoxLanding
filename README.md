@@ -1,9 +1,9 @@
 # GetBoxLanding
 
-Лендинг для [GetBox](https://github.com/IncludeSpecial/GetBox) — локальный магазин программ для Windows.
+Лендинг для [GetBox](https://github.com/IncludeSpecial/GetBox).
 
 Vite + React + TypeScript.  
-Репозиторий: [IncludeSpecial/GetBoxLanding](https://github.com/IncludeSpecial/GetBoxLanding)
+Репо: [IncludeSpecial/GetBoxLanding](https://github.com/IncludeSpecial/GetBoxLanding)
 
 ## Запуск
 
@@ -13,37 +13,46 @@ npm run dev
 ```
 
 ```bash
-npm run build    # → dist/
-npm run preview  # локальный просмотр сборки
+npm run build
+npm run preview
 ```
+
+## Релизы
+
+Бинарники лежат в **GitHub Releases** репо GetBox.  
+Лендинг на Vercel только ссылается на них.
+
+Формат URL:
+
+```
+https://github.com/IncludeSpecial/GetBox/releases/download/v{VERSION}/{FILENAME}
+```
+
+Пример: тег `v1.1.0`, файл `GetBox-1.1.0-portable.exe`.
+
+Новый релиз:
+
+1. Собрать portable exe в GetBox
+2. Создать Release в GetBox с тегом `vX.Y.Z` и прикрепить exe
+3. Добавить запись в `RELEASES` в [`src/config.ts`](src/config.ts)
+4. Запушить GetBoxLanding — Vercel подтянет сайт
+
+Актуальная версия на сайте — по semver из `RELEASES`.
 
 ## Настройка
 
-[`src/config.ts`](src/config.ts) — релизы и ссылки:
+[`src/config.ts`](src/config.ts) — `GITHUB_*`, `RELEASES`.  
+[`src/i18n.ts`](src/i18n.ts) — тексты RU/EN.
 
-- `GITHUB_URL` → `https://github.com/IncludeSpecial/GetBox`
-- `RELEASES` — версии, URL скачивания, размер, дата, заметки RU/EN  
-  Актуальная версия берётся по semver.
+## Ассеты сайта
 
-Тексты: [`src/i18n.ts`](src/i18n.ts) (RU/EN).
+`public/screenshots/`, `public/icons/` — картинки лендинга.  
+Exe в `public/download/` не нужны.
 
-## Файлы
+## Vercel
 
-| Путь | Что лежит |
-|------|-----------|
-| `public/screenshots/` | скрины UI |
-| `public/icons/` | SVG иконок |
-| `public/download/` | portable `.exe` (в git не коммитятся) |
+1. Import `IncludeSpecial/GetBoxLanding`
+2. Framework: Vite (или Other), build `npm run build`, output `dist`
+3. Домен — в настройках проекта
 
-Новый релиз: файл в `public/download/` + запись в `RELEASES`.
-
-## Деплой
-
-Сборка — static `dist/`. Для GitHub Pages:
-
-```ts
-// vite.config.ts
-base: '/GetBoxLanding/',
-```
-
-Сайт: `https://getbox.ne-nas-ru/`
+`base` в Vite не нужен (сайт в корне домена).

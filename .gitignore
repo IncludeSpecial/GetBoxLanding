@@ -32,6 +32,4 @@ Thumbs.db
 
 # local leftovers
 names.txt
-
-# portable builds (keep locally / CI artifacts)
-public/download/*.exe
+public/download/

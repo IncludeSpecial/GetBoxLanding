@@ -28,7 +28,7 @@ export function Nav() {
         <a className="btn btn--ghost btn--sm" href={GITHUB_URL} target="_blank" rel="noreferrer">
           {t('navGithub')}
         </a>
-        <a className="btn btn--cta btn--sm" href={selected.url} download={selected.filename}>
+        <a className="btn btn--cta btn--sm" href={selected.url} rel="noopener noreferrer">
           {t('navDownload')}
         </a>
       </div>

@@ -1,10 +1,12 @@
 import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
-import { LATEST, RELEASES_DESC, type Release } from './config'
+import { LATEST, RELEASES_DESC } from './config'
+
+type ResolvedRelease = (typeof RELEASES_DESC)[number]
 
 type ReleaseCtx = {
-  selected: Release
+  selected: ResolvedRelease
   setVersion: (version: string) => void
-  releases: Release[]
+  releases: ResolvedRelease[]
 }
 
 const Ctx = createContext<ReleaseCtx | null>(null)
