@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/download/:path*",
+      "destination": "https://github.com/IncludeSpecial/GetBox/releases/download/:path*",
+      "permanent": false
+    }
+  ]
+}

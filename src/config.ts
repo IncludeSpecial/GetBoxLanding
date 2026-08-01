@@ -1,8 +1,11 @@
-/** Releases live on GitHub; the landing on Vercel only links to them. */
+/** Site on Vercel; binaries stay on GitHub Releases (redirect via vercel.json). */
 
 export const GITHUB_OWNER = 'IncludeSpecial'
 export const GITHUB_REPO = 'GetBox'
 export const GITHUB_URL = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}`
+
+/** Production domain (Vercel). */
+export const SITE_URL = 'https://getbox.ne-nas.ru'
 
 export type Release = {
   version: string
@@ -10,13 +13,16 @@ export type Release = {
   sizeLabel: string
   date: string
   notes?: { ru: string; en: string }
-  /** Override asset URL if needed. Default: GitHub Releases download. */
+  /** Override download URL if needed. */
   url?: string
 }
 
-/** Tag on GitHub Releases = `v` + version (e.g. v1.1.0). */
+/**
+ * Pretty URL on the landing domain.
+ * Vercel redirects `/download/vX.Y.Z/file.exe` → GitHub Releases.
+ */
 export function releaseUrl(version: string, filename: string) {
-  return `${GITHUB_URL}/releases/download/v${version}/${filename}`
+  return `/download/v${version}/${filename}`
 }
 
 export const RELEASES: Release[] = [
