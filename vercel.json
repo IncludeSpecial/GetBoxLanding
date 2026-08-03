@@ -5,5 +5,11 @@
       "destination": "https://github.com/IncludeSpecial/GetBox/releases/download/:path*",
       "permanent": false
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }

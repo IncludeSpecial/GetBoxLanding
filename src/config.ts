@@ -1,10 +1,11 @@
-/** Site on Vercel; binaries stay on GitHub Releases (redirect via vercel.json). */
+/** Binaries download from GitHub Releases. Site on Vercel. */
 
 export const GITHUB_OWNER = 'IncludeSpecial'
 export const GITHUB_REPO = 'GetBox'
 export const GITHUB_URL = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}`
+export const GITHUB_RELEASES_API = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases`
+export const GITHUB_RELEASES_PAGE = `${GITHUB_URL}/releases`
 
-/** Production domain (Vercel). */
 export const SITE_URL = 'https://getbox.ne-nas.ru'
 
 export type Release = {
@@ -12,63 +13,10 @@ export type Release = {
   filename: string
   sizeLabel: string
   date: string
-  notes?: { ru: string; en: string }
-  /** Override download URL if needed. */
-  url?: string
+  notes?: string
+  /** Direct GitHub asset URL */
+  url: string
 }
-
-/**
- * Pretty URL on the landing domain.
- * Vercel redirects `/download/vX.Y.Z/file.exe` → GitHub Releases.
- */
-export function releaseUrl(version: string, filename: string) {
-  return `/download/v${version}/${filename}`
-}
-
-export const RELEASES: Release[] = [
-  {
-    version: '1.1.0',
-    filename: 'GetBox-1.1.0-portable.exe',
-    sizeLabel: '~74 MB',
-    date: '2026-08-02',
-    notes: {
-      ru: 'Portable-релиз для Windows x64',
-      en: 'Portable release for Windows x64',
-    },
-  },
-  {
-    version: '1.0.0',
-    filename: 'GetBox-1.0.0-portable.exe',
-    sizeLabel: '~72 MB',
-    date: '2026-08-01',
-    notes: {
-      ru: 'Первый portable-релиз для Windows x64',
-      en: 'First portable release for Windows x64',
-    },
-  },
-]
-
-function cmpSemver(a: string, b: string) {
-  const pa = a.split('.').map((n) => Number(n) || 0)
-  const pb = b.split('.').map((n) => Number(n) || 0)
-  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
-    const d = (pb[i] ?? 0) - (pa[i] ?? 0)
-    if (d !== 0) return d
-  }
-  return 0
-}
-
-export const RELEASES_DESC = [...RELEASES]
-  .map((r) => ({
-    ...r,
-    url: r.url ?? releaseUrl(r.version, r.filename),
-  }))
-  .sort((a, b) => cmpSemver(a.version, b.version))
-
-export const LATEST = RELEASES_DESC[0]
-
-export const DOWNLOAD_URL = LATEST.url
-export const DOWNLOAD_FILENAME = LATEST.filename
-export const APP_VERSION = LATEST.version
 
 export const PLATFORM = 'Windows 10/11 · x64 · Portable'
+export const ASSET_MATCH = /portable\.exe$/i

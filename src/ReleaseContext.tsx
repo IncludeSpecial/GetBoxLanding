@@ -1,23 +1,70 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
-import { LATEST, RELEASES_DESC } from './config'
-
-type ResolvedRelease = (typeof RELEASES_DESC)[number]
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react'
+import { GITHUB_RELEASES_PAGE } from './config'
+import type { Release } from './config'
+import { fetchReleases } from './releases'
 
 type ReleaseCtx = {
-  selected: ResolvedRelease
-  setVersion: (version: string) => void
-  releases: ResolvedRelease[]
+  latest: Release | null
+  older: Release[]
+  releases: Release[]
+  loading: boolean
+  error: string | null
+  releasesPage: string
 }
 
 const Ctx = createContext<ReleaseCtx | null>(null)
 
 export function ReleaseProvider({ children }: { children: ReactNode }) {
-  const [version, setVersion] = useState(LATEST.version)
+  const [releases, setReleases] = useState<Release[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      try {
+        const list = await fetchReleases()
+        if (cancelled) return
+        if (list.length === 0) {
+          setError('no-releases')
+          setReleases([])
+          return
+        }
+        setReleases(list)
+        setError(null)
+      } catch {
+        if (!cancelled) {
+          setError('fetch-failed')
+          setReleases([])
+        }
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const value = useMemo(() => {
-    const selected = RELEASES_DESC.find((r) => r.version === version) ?? LATEST
-    return { selected, setVersion, releases: RELEASES_DESC }
-  }, [version])
+    const latest = releases[0] ?? null
+    const older = releases.slice(1)
+    return {
+      latest,
+      older,
+      releases,
+      loading,
+      error,
+      releasesPage: GITHUB_RELEASES_PAGE,
+    }
+  }, [releases, loading, error])
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }

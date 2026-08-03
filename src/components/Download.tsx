@@ -1,11 +1,12 @@
-import { GITHUB_URL, LATEST, PLATFORM } from '../config'
+import { GITHUB_URL, PLATFORM } from '../config'
 import { useT } from '../I18nContext'
 import { useRelease } from '../ReleaseContext'
 import { Logo } from './Logo'
 
 export function Download() {
-  const { t, lang } = useT()
-  const { selected, setVersion, releases } = useRelease()
+  const { t } = useT()
+  const { latest, older, loading, error, releasesPage } = useRelease()
+  const href = latest?.url ?? releasesPage
 
   return (
     <section className="section download" id="download">
@@ -25,54 +26,28 @@ export function Download() {
             </div>
             <div>
               <dt>{t('specVersion')}</dt>
-              <dd>v{LATEST.version}</dd>
+              <dd>{latest ? `v${latest.version}` : '—'}</dd>
             </div>
           </dl>
         </aside>
 
         <div className="download__main">
-          <div className="versions" role="listbox" aria-label={t('selectVersion')}>
-            {releases.map((rel) => {
-              const active = rel.version === selected.version
-              const isLatest = rel.version === LATEST.version
-              return (
-                <button
-                  key={rel.version}
-                  type="button"
-                  role="option"
-                  aria-selected={active}
-                  className={`versions__row${active ? ' is-active' : ''}`}
-                  onClick={() => setVersion(rel.version)}
-                >
-                  <span className="versions__radio" aria-hidden="true" />
-                  <span className="versions__body">
-                    <span className="versions__top">
-                      <strong className="mono">v{rel.version}</strong>
-                      {isLatest ? (
-                        <span className="versions__latest">{t('versionLatest')}</span>
-                      ) : null}
-                    </span>
-                    <span className="versions__specs mono">
-                      {rel.date}
-                      <span aria-hidden="true"> · </span>
-                      {rel.sizeLabel}
-                    </span>
-                    {rel.notes ? (
-                      <span className="versions__notes">{rel.notes[lang]}</span>
-                    ) : null}
-                  </span>
-                </button>
-              )
-            })}
-          </div>
+          {loading ? (
+            <p className="versions__status mono">{t('releasesLoading')}</p>
+          ) : null}
 
-          <div className="versions__action">
-            <a
-              className="btn btn--cta btn--lg"
-              href={selected.url}
-              rel="noopener noreferrer"
-            >
-              {t('ctaDownload')} v{selected.version}
+          {error ? (
+            <p className="versions__status">
+              {error === 'no-releases' ? t('releasesEmpty') : t('releasesError')}{' '}
+              <a href={releasesPage} target="_blank" rel="noreferrer">
+                GitHub Releases
+              </a>
+            </p>
+          ) : null}
+
+          <div className="download__primary">
+            <a className="btn btn--cta btn--lg" href={href} rel="noopener noreferrer">
+              {latest ? `${t('ctaDownload')} v${latest.version}` : t('ctaDownload')}
             </a>
             <a
               className="btn btn--ghost btn--lg"
@@ -82,8 +57,40 @@ export function Download() {
             >
               {t('ctaGithub')}
             </a>
-            <p className="versions__file mono">{selected.filename}</p>
+            {latest ? (
+              <p className="download__file mono">
+                {latest.filename}
+                <span aria-hidden="true"> · </span>
+                {latest.sizeLabel}
+                {latest.notes ? (
+                  <>
+                    <br />
+                    <span className="download__note">{latest.notes}</span>
+                  </>
+                ) : null}
+              </p>
+            ) : null}
           </div>
+
+          {older.length > 0 ? (
+            <details className="archive">
+              <summary>{t('previousVersions')}</summary>
+              <ul className="archive__list">
+                {older.map((rel) => (
+                  <li key={rel.version}>
+                    <a href={rel.url} rel="noopener noreferrer" className="mono">
+                      v{rel.version}
+                    </a>
+                    <span className="mono">
+                      {rel.date}
+                      <span aria-hidden="true"> · </span>
+                      {rel.sizeLabel}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ) : null}
         </div>
       </div>
     </section>

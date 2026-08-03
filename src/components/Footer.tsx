@@ -16,6 +16,11 @@ export function Footer() {
           </div>
         </div>
         <div className="footer__meta">
+          <nav className="footer__legal" aria-label={t('footerLegal')}>
+            <a href="/privacy">{t('footerPrivacy')}</a>
+            <a href="/cookies">{t('footerCookies')}</a>
+            <a href="/terms">{t('footerTerms')}</a>
+          </nav>
           <a href={GITHUB_URL} target="_blank" rel="noreferrer">
             GitHub
           </a>

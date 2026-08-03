@@ -6,7 +6,8 @@ import { HeroMockup } from './HeroMockup'
 
 export function Hero() {
   const { t } = useT()
-  const { selected } = useRelease()
+  const { latest, releasesPage } = useRelease()
+  const href = latest?.url ?? releasesPage
 
   return (
     <section className="hero" id="top">
@@ -24,11 +25,7 @@ export function Hero() {
           <p className="hero__support">{t('heroSupport')}</p>
 
           <div className="hero__cta">
-            <a
-              className="btn btn--cta btn--lg"
-              href={selected.url}
-              rel="noopener noreferrer"
-            >
+            <a className="btn btn--cta btn--lg" href={href} rel="noopener noreferrer">
               {t('ctaDownload')}
             </a>
             <a className="btn btn--ghost btn--lg" href={GITHUB_URL} target="_blank" rel="noreferrer">
@@ -39,7 +36,7 @@ export function Hero() {
           <dl className="hero__specs mono">
             <div>
               <dt>{t('specVersion')}</dt>
-              <dd>v{selected.version}</dd>
+              <dd>{latest ? `v${latest.version}` : '—'}</dd>
             </div>
             <div>
               <dt>{t('specPlatform')}</dt>
@@ -47,7 +44,7 @@ export function Hero() {
             </div>
             <div>
               <dt>{t('specSize')}</dt>
-              <dd>{selected.sizeLabel}</dd>
+              <dd>{latest?.sizeLabel ?? '—'}</dd>
             </div>
             <div>
               <dt>{t('specType')}</dt>
