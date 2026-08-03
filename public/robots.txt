@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://getbox.ne-nas.ru/sitemap.xml
