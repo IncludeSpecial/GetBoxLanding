@@ -14,7 +14,7 @@ export type LegalDoc = {
 
 const privacyRu: LegalDoc = {
   title: 'Политика конфиденциальности',
-  updated: '3 августа 2026',
+  updated: '12 октября 2026',
   intro:
     'Эта политика описывает, какие данные обрабатываются при посещении сайта GetBox и при использовании приложения GetBox. Мы стараемся собирать минимум и не продаём персональные данные.',
   blocks: [
@@ -29,9 +29,10 @@ const privacyRu: LegalDoc = {
       paragraphs: [
         'На сайте мы не просим регистрацию, email или платёжные данные.',
         'В браузере может сохраняться выбранный язык интерфейса (localStorage). Это нужно только для удобства и не передаётся на наши серверы как учётная запись.',
-        'Страница загрузки запрашивает публичный API GitHub, чтобы показать актуальные релизы. Запрос уходит с вашего устройства на api.github.com; ответы обрабатываются в браузере.',
+        'Чтобы показать актуальные релизы, страница запрашивает список у нашего сервера (Vercel), который берёт его из публичного API GitHub. Если сервер недоступен, браузер обращается к api.github.com напрямую. Полученный список кэшируется в localStorage на несколько минут.',
         'Сайт размещён у хостинг-провайдера (Vercel). Провайдер может автоматически обрабатывать технические логи (IP, User-Agent, время запроса) в объёме, необходимом для работы и защиты сервиса — по своим правилам.',
-        'Для шрифтов страница может обращаться к Google Fonts. При этом ваш браузер устанавливает соединение с серверами Google; подробности — в политике Google.',
+        'Для подсчёта посещений используется Vercel Web Analytics. Он не ставит cookie и не хранит IP-адреса: учитываются страница, источник перехода, страна, тип устройства и браузера в обезличенном виде. Посетители не отслеживаются между сайтами и между днями.',
+        'Шрифты загружаются с того же домена, что и сайт; сторонние сервисы шрифтов не используются.',
       ],
     },
     {
@@ -53,7 +54,7 @@ const privacyRu: LegalDoc = {
       heading: 'Передача и хранение',
       paragraphs: [
         'Мы не продаём персональные данные и не передаём их третьим лицам для рекламного таргетинга.',
-        'Данные, которые обрабатывают GitHub, Vercel, Google Fonts или менеджеры пакетов, регулируются политиками этих сервисов.',
+        'Данные, которые обрабатывают GitHub, Vercel или менеджеры пакетов, регулируются политиками этих сервисов.',
       ],
     },
     {
@@ -74,7 +75,7 @@ const privacyRu: LegalDoc = {
 
 const privacyEn: LegalDoc = {
   title: 'Privacy Policy',
-  updated: 'August 3, 2026',
+  updated: 'October 12, 2026',
   intro:
     'This policy explains what data is processed when you visit the GetBox website and use the GetBox app. We aim to collect as little as possible and do not sell personal data.',
   blocks: [
@@ -89,9 +90,10 @@ const privacyEn: LegalDoc = {
       paragraphs: [
         'We do not ask for registration, email, or payment details on the site.',
         'Your browser may store the selected UI language in localStorage. This is only for convenience and is not used as an account on our servers.',
-        'The download section calls the public GitHub API to show current releases. The request is made from your device to api.github.com; responses are handled in the browser.',
+        'To show current releases, the page requests the list from our server (Vercel), which takes it from the public GitHub API. If the server is unavailable, your browser calls api.github.com directly. The list is cached in localStorage for a few minutes.',
         'The site is hosted by a hosting provider (Vercel). The provider may process technical logs (IP, User-Agent, request time) as needed to operate and protect the service, under its own terms.',
-        'The page may load fonts from Google Fonts. Your browser then connects to Google servers; see Google’s policies for details.',
+        'We count visits with Vercel Web Analytics. It sets no cookies and does not store IP addresses: it records the page, referrer, country, device and browser type in anonymized form. Visitors are not tracked across sites or across days.',
+        'Fonts are served from the same domain as the site; no third-party font services are used.',
       ],
     },
     {
@@ -113,7 +115,7 @@ const privacyEn: LegalDoc = {
       heading: 'Sharing and retention',
       paragraphs: [
         'We do not sell personal data or share it with third parties for ad targeting.',
-        'Data processed by GitHub, Vercel, Google Fonts, or package managers is governed by those services’ policies.',
+        'Data processed by GitHub, Vercel, or package managers is governed by those services’ policies.',
       ],
     },
     {
@@ -134,14 +136,13 @@ const privacyEn: LegalDoc = {
 
 const cookiesRu: LegalDoc = {
   title: 'Политика Cookie',
-  updated: '3 августа 2026',
-  intro:
-    'Этот документ объясняет, какие cookie и похожие технологии используются на сайте GetBox.',
+  updated: '12 октября 2026',
+  intro: 'Этот документ объясняет, какие cookie и похожие технологии используются на сайте GetBox.',
   blocks: [
     {
       heading: 'Что мы используем',
       paragraphs: [
-        'Мы не размещаем рекламные или аналитические cookie-трекеры (Google Analytics, Meta Pixel и т.п.).',
+        'Мы не размещаем рекламные или аналитические cookie-трекеры (Google Analytics, Meta Pixel и т.п.). Для статистики посещений используется Vercel Web Analytics, который работает без cookie.',
         'Выбранный язык интерфейса сохраняется в localStorage браузера (ключ getbox-lang). Это не cookie в классическом смысле, но похожая технология хранения на устройстве.',
       ],
     },
@@ -149,35 +150,32 @@ const cookiesRu: LegalDoc = {
       heading: 'Технические и сторонние запросы',
       paragraphs: [
         'Хостинг (Vercel) и сеть доставки могут выставлять собственные технические cookie или логировать запросы для безопасности и работоспособности.',
-        'Подключение Google Fonts может привести к обработке данных на стороне Google согласно их политике.',
-        'Запросы к api.github.com для списка релизов выполняются вашим браузером; cookie GitHub зависят от того, залогинены ли вы на github.com в этом браузере.',
+        'Список релизов кэшируется в localStorage (ключ getbox-releases). Если наш сервер недоступен, браузер запрашивает api.github.com напрямую; cookie GitHub зависят от того, залогинены ли вы на github.com в этом браузере.',
       ],
     },
     {
       heading: 'Управление',
       paragraphs: [
         'Вы можете очистить данные сайта (включая localStorage) в настройках браузера или использовать режим инкогнито.',
-        'Блокировка сторонних запросов (расширениями или настройками) может повлиять на шрифты или отображение релизов — основной контент страницы останется доступен.',
+        'Блокировка сторонних запросов (расширениями или настройками) может повлиять на отображение релизов — основной контент страницы останется доступен.',
       ],
     },
     {
       heading: 'Связь с конфиденциальностью',
-      paragraphs: [
-        'Общая информация об обработке данных — в Политике конфиденциальности.',
-      ],
+      paragraphs: ['Общая информация об обработке данных — в Политике конфиденциальности.'],
     },
   ],
 }
 
 const cookiesEn: LegalDoc = {
   title: 'Cookie Policy',
-  updated: 'August 3, 2026',
+  updated: 'October 12, 2026',
   intro: 'This document explains cookies and similar technologies used on the GetBox website.',
   blocks: [
     {
       heading: 'What we use',
       paragraphs: [
-        'We do not place advertising or analytics cookie trackers (Google Analytics, Meta Pixel, etc.).',
+        'We do not place advertising or analytics cookie trackers (Google Analytics, Meta Pixel, etc.). Visit statistics come from Vercel Web Analytics, which works without cookies.',
         'The selected UI language is stored in browser localStorage (key getbox-lang). That is not a classic cookie, but a similar on-device storage technology.',
       ],
     },
@@ -185,22 +183,19 @@ const cookiesEn: LegalDoc = {
       heading: 'Technical and third-party requests',
       paragraphs: [
         'Hosting (Vercel) and the delivery network may set their own technical cookies or log requests for security and reliability.',
-        'Loading Google Fonts may involve processing by Google under their policies.',
-        'Requests to api.github.com for the release list are made by your browser; GitHub cookies depend on whether you are signed in to github.com in that browser.',
+        'The release list is cached in localStorage (key getbox-releases). If our server is unavailable, your browser requests api.github.com directly; GitHub cookies depend on whether you are signed in to github.com in that browser.',
       ],
     },
     {
       heading: 'Your controls',
       paragraphs: [
         'You can clear site data (including localStorage) in browser settings or use a private window.',
-        'Blocking third-party requests (via extensions or settings) may affect fonts or the release list — the main page content remains available.',
+        'Blocking third-party requests (via extensions or settings) may affect the release list — the main page content remains available.',
       ],
     },
     {
       heading: 'Related privacy info',
-      paragraphs: [
-        'General information about data processing is in the Privacy Policy.',
-      ],
+      paragraphs: ['General information about data processing is in the Privacy Policy.'],
     },
   ],
 }
@@ -320,18 +315,4 @@ const docs = {
 
 export function getLegalDoc(lang: 'ru' | 'en', id: LegalDocId): LegalDoc {
   return docs[lang][id]
-}
-
-export const LEGAL_PATHS: Record<LegalDocId, string> = {
-  privacy: '/privacy',
-  cookies: '/cookies',
-  terms: '/terms',
-}
-
-export function pathToLegalId(pathname: string): LegalDocId | null {
-  const path = pathname.replace(/\/+$/, '') || '/'
-  if (path === '/privacy') return 'privacy'
-  if (path === '/cookies') return 'cookies'
-  if (path === '/terms') return 'terms'
-  return null
 }

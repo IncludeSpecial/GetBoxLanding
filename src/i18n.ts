@@ -1,5 +1,3 @@
-import { useCallback, useEffect, useState } from 'react'
-
 export type Lang = 'ru' | 'en'
 
 const STORAGE_KEY = 'getbox-lang'
@@ -11,6 +9,7 @@ const dict = {
     navProviders: 'Провайдеры',
     navDownload: 'Скачать',
     navGithub: 'GitHub',
+    navMenu: 'Меню',
     brandName: 'GetBox',
     brandSub: 'Локальный магазин программ для Windows',
     heroKicker: 'portable · scoop · winget · chocolatey',
@@ -59,6 +58,8 @@ const dict = {
     providerChocoDesc: 'Один UAC при первом запуске — дальше тихие установки.',
     downloadTitle: 'Скачать GetBox',
     downloadLead: 'Portable с GitHub Releases. Runtime ставится при первом запуске, не внутри exe.',
+    smartscreenNote:
+      'Если Windows SmartScreen покажет предупреждение о неизвестном издателе — нажмите «Подробнее» → «Выполнить в любом случае».',
     footerCopy: 'GetBox — локальный магазин программ для Windows.',
     footerRights: '© GetBox',
     footerLegal: 'Документы',
@@ -74,6 +75,7 @@ const dict = {
     navProviders: 'Providers',
     navDownload: 'Download',
     navGithub: 'GitHub',
+    navMenu: 'Menu',
     brandName: 'GetBox',
     brandSub: 'Local software store for Windows',
     heroKicker: 'portable · scoop · winget · chocolatey',
@@ -99,11 +101,9 @@ const dict = {
     feature1Text:
       'Category shelves, icons, and descriptions from an offline catalog — no site hopping.',
     feature2Title: 'Install profiles',
-    feature2Text:
-      'Gaming Rig, Dev Starter, Essentials, and more — one click, a ready toolkit.',
+    feature2Text: 'Gaming Rig, Dev Starter, Essentials, and more — one click, a ready toolkit.',
     feature3Title: 'Quiet installs',
-    feature3Text:
-      'Official installers. Scoop, winget, and Chocolatey bootstrap on first run.',
+    feature3Text: 'Official installers. Scoop, winget, and Chocolatey bootstrap on first run.',
     showcaseTitle: 'Interface',
     showcaseLead: 'Home, catalog, app details, and the provider package index.',
     shotHome: 'Home',
@@ -121,7 +121,10 @@ const dict = {
     providerChoco: 'Chocolatey',
     providerChocoDesc: 'One UAC prompt on first run — quiet installs after that.',
     downloadTitle: 'Download GetBox',
-    downloadLead: 'Portable from GitHub Releases. Runtime installs on first launch, not inside the exe.',
+    downloadLead:
+      'Portable from GitHub Releases. Runtime installs on first launch, not inside the exe.',
+    smartscreenNote:
+      'If Windows SmartScreen warns about an unknown publisher, click “More info” → “Run anyway”.',
     footerCopy: 'GetBox — a local software store for Windows.',
     footerRights: '© GetBox',
     footerLegal: 'Legal',
@@ -135,36 +138,30 @@ const dict = {
 
 export type DictKey = keyof typeof dict.ru
 
-function detectLang(): Lang {
+/** Language the visitor chose earlier with the toggle, if any. */
+export function savedLang(): Lang | null {
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved === 'ru' || saved === 'en') return saved
   } catch {
     /* ignore */
   }
+  return null
+}
+
+export function saveLang(lang: Lang) {
+  try {
+    localStorage.setItem(STORAGE_KEY, lang)
+  } catch {
+    /* ignore */
+  }
+}
+
+export function browserLang(): Lang {
   const nav = navigator.language?.toLowerCase() ?? ''
   return nav.startsWith('ru') ? 'ru' : 'en'
 }
 
-export function useI18n() {
-  const [lang, setLangState] = useState<Lang>(() =>
-    typeof window === 'undefined' ? 'ru' : detectLang(),
-  )
-
-  useEffect(() => {
-    document.documentElement.lang = lang
-  }, [lang])
-
-  const setLang = useCallback((next: Lang) => {
-    setLangState(next)
-    try {
-      localStorage.setItem(STORAGE_KEY, next)
-    } catch {
-      /* ignore */
-    }
-  }, [])
-
-  const t = useCallback((key: DictKey) => dict[lang][key], [lang])
-
-  return { lang, setLang, t }
+export function translate(lang: Lang, key: DictKey) {
+  return dict[lang][key]
 }

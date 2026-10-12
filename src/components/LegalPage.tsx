@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
 import { useT } from '../I18nContext'
 import { getLegalDoc, type LegalDocId } from '../legal/content'
+import { buildPath } from '../routes'
 
 type Props = {
   id: LegalDocId
@@ -10,21 +10,11 @@ export function LegalPage({ id }: Props) {
   const { lang, t } = useT()
   const doc = getLegalDoc(lang, id)
 
-  useEffect(() => {
-    document.title = `${doc.title} — GetBox`
-    return () => {
-      document.title =
-        lang === 'ru'
-          ? 'GetBox — магазин программ для Windows'
-          : 'GetBox — Windows software store'
-    }
-  }, [doc.title, lang])
-
   return (
     <article className="legal">
       <div className="legal__inner">
         <p className="legal__back">
-          <a href="/">{t('legalBack')}</a>
+          <a href={buildPath(lang)}>{t('legalBack')}</a>
         </p>
         <h1>{doc.title}</h1>
         <p className="legal__meta">

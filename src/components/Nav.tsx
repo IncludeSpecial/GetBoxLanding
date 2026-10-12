@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react'
 import { GITHUB_URL } from '../config'
 import { useT } from '../I18nContext'
 import { useRelease } from '../ReleaseContext'
+import { buildPath } from '../routes'
 import { LangToggle } from './LangToggle'
 import { Logo } from './Logo'
 
@@ -10,20 +12,38 @@ type Props = {
 }
 
 export function Nav({ home = false }: Props) {
-  const { t } = useT()
+  const { lang, t } = useT()
   const { latest, releasesPage } = useRelease()
+  const [open, setOpen] = useState(false)
   const href = latest?.url ?? releasesPage
-  const prefix = home ? '/' : ''
+  const homePath = buildPath(lang)
+  const prefix = home ? homePath : ''
+
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open])
 
   return (
-    <header className="nav">
-      <a className="nav__brand" href={home ? '/' : '#top'}>
-        <Logo className="logo--nav" />
+    <header className={`nav${open ? ' is-open' : ''}`}>
+      <a className="nav__brand" href={home ? homePath : '#top'}>
+        <Logo className="logo--nav" decorative />
         <strong>{t('brandName')}</strong>
         {latest ? <span className="nav__ver mono">v{latest.version}</span> : null}
       </a>
 
-      <nav className="nav__links" aria-label="Primary">
+      <nav
+        className="nav__links"
+        id="nav-links"
+        aria-label={t('navMenu')}
+        onClick={(e) => {
+          if ((e.target as HTMLElement).closest('a')) setOpen(false)
+        }}
+      >
         <a href={`${prefix}#features`}>{t('navFeatures')}</a>
         <a href={`${prefix}#showcase`}>{t('navShowcase')}</a>
         <a href={`${prefix}#providers`}>{t('navProviders')}</a>
@@ -38,6 +58,16 @@ export function Nav({ home = false }: Props) {
         <a className="btn btn--cta btn--sm" href={href} rel="noopener noreferrer">
           {t('navDownload')}
         </a>
+        <button
+          type="button"
+          className="nav__burger"
+          aria-expanded={open}
+          aria-controls="nav-links"
+          aria-label={t('navMenu')}
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span aria-hidden="true" />
+        </button>
       </div>
     </header>
   )

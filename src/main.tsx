@@ -1,10 +1,35 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
+import { inject } from '@vercel/analytics'
+import '@fontsource/ibm-plex-sans/400.css'
+import '@fontsource/ibm-plex-sans/500.css'
+import '@fontsource/ibm-plex-sans/600.css'
+import '@fontsource/ibm-plex-sans/700.css'
+import '@fontsource/ibm-plex-mono/400.css'
+import '@fontsource/ibm-plex-mono/500.css'
 import App from './App'
+import type { Release } from './config'
 import './styles.css'
 
-createRoot(document.getElementById('root')!).render(
+declare global {
+  interface Window {
+    __GETBOX_RELEASES__?: Release[]
+  }
+}
+
+const root = document.getElementById('root')!
+const app = (
   <StrictMode>
-    <App />
-  </StrictMode>,
+    <App releases={window.__GETBOX_RELEASES__} />
+  </StrictMode>
 )
+
+// Cookie-free page view stats; needs Web Analytics enabled in the Vercel project.
+inject()
+
+// Production pages are prerendered (scripts/prerender.mjs); dev serves an empty root.
+if (root.hasChildNodes()) {
+  hydrateRoot(root, app)
+} else {
+  createRoot(root).render(app)
+}

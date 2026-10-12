@@ -43,15 +43,22 @@ export function Features() {
         </div>
 
         <div className="feature-list">
-          {items.map((item) => (
+          {items.map((item, i) => (
             <article key={item.title} className="feature-item">
-              <img
-                className="feature-item__icon"
-                src={`/icons/${item.icon}.svg`}
-                alt=""
-                width={28}
-                height={28}
-              />
+              <div className="feature-item__top">
+                <span className="feature-item__tile">
+                  <img
+                    className="feature-item__icon"
+                    src={`/icons/${item.icon}.svg`}
+                    alt=""
+                    width={28}
+                    height={28}
+                  />
+                </span>
+                <span className="feature-item__num mono" aria-hidden="true">
+                  0{i + 1}
+                </span>
+              </div>
               <h3>{item.title}</h3>
               <p>{item.text}</p>
             </article>

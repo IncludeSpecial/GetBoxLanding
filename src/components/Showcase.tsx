@@ -1,17 +1,19 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { useT } from '../I18nContext'
+import { shot } from '../screenshots'
 
 const SHOTS = [
-  { src: '/screenshots/home.png', key: 'shotHome' as const },
-  { src: '/screenshots/catalog.png', key: 'shotCatalog' as const },
-  { src: '/screenshots/modal.png', key: 'shotModal' as const },
-  { src: '/screenshots/packages.png', key: 'shotPackages' as const },
+  { name: 'home', key: 'shotHome' as const },
+  { name: 'catalog', key: 'shotCatalog' as const },
+  { name: 'modal', key: 'shotModal' as const },
+  { name: 'packages', key: 'shotPackages' as const },
 ]
 
 export function Showcase() {
   const { t } = useT()
   const [active, setActive] = useState(0)
   const stageRef = useRef<HTMLDivElement>(null)
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
 
   useEffect(() => {
     const el = stageRef.current
@@ -21,7 +23,28 @@ export function Showcase() {
     return () => cancelAnimationFrame(id)
   }, [active])
 
+  const select = (i: number) => {
+    const next = (i + SHOTS.length) % SHOTS.length
+    setActive(next)
+    tabRefs.current[next]?.focus()
+  }
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    const keys: Record<string, number> = {
+      ArrowDown: active + 1,
+      ArrowRight: active + 1,
+      ArrowUp: active - 1,
+      ArrowLeft: active - 1,
+      Home: 0,
+      End: SHOTS.length - 1,
+    }
+    if (!(e.key in keys)) return
+    e.preventDefault()
+    select(keys[e.key])
+  }
+
   const current = SHOTS[active]
+  const img = shot(current.name)
 
   return (
     <section className="section showcase" id="showcase">
@@ -32,23 +55,39 @@ export function Showcase() {
         </header>
 
         <div className="showcase__layout">
-          <div className="showcase__thumbs" role="tablist" aria-label={t('showcaseTitle')}>
-            {SHOTS.map((shot, i) => (
+          <div
+            className="showcase__thumbs"
+            role="tablist"
+            aria-label={t('showcaseTitle')}
+            onKeyDown={onKeyDown}
+          >
+            {SHOTS.map((s, i) => (
               <button
-                key={shot.src}
+                key={s.name}
+                ref={(el) => {
+                  tabRefs.current[i] = el
+                }}
+                id={`showcase-tab-${s.name}`}
                 type="button"
                 role="tab"
                 aria-selected={i === active}
+                aria-controls="showcase-panel"
+                tabIndex={i === active ? 0 : -1}
                 className={`showcase__thumb${i === active ? ' is-active' : ''}`}
                 onClick={() => setActive(i)}
               >
-                <img src={shot.src} alt="" loading="lazy" decoding="async" />
-                <span>{t(shot.key)}</span>
+                <span>{t(s.key)}</span>
               </button>
             ))}
           </div>
 
-          <div className="showcase__stage" ref={stageRef}>
+          <div
+            className="showcase__stage"
+            ref={stageRef}
+            id="showcase-panel"
+            role="tabpanel"
+            aria-labelledby={`showcase-tab-${current.name}`}
+          >
             <div className="showcase__pad">
               <div className="showcase__bezel">
                 <div className="showcase__titlebar" aria-hidden="true">
@@ -60,8 +99,12 @@ export function Showcase() {
                   </span>
                 </div>
                 <img
-                  src={current.src}
+                  src={img.src}
+                  srcSet={img.srcSet}
+                  sizes="(max-width: 900px) 100vw, 1100px"
                   alt={t(current.key)}
+                  width={1920}
+                  height={950}
                   loading="lazy"
                   decoding="async"
                 />

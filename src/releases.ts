@@ -67,10 +67,58 @@ export function mapGithubReleases(raw: GhRelease[]): Release[] {
   return out
 }
 
-export async function fetchReleases(): Promise<Release[]> {
-  const res = await fetch(GITHUB_RELEASES_API, {
-    headers: { Accept: 'application/vnd.github+json' },
-  })
+/** Direct GitHub API call. Used by /api/releases, the prerender step and as a client fallback. */
+export async function fetchGithubReleases(token?: string): Promise<Release[]> {
+  const headers: Record<string, string> = { Accept: 'application/vnd.github+json' }
+  if (token) headers.Authorization = `Bearer ${token}`
+  const res = await fetch(GITHUB_RELEASES_API, { headers })
   if (!res.ok) throw new Error(`GitHub Releases: ${res.status}`)
   return mapGithubReleases((await res.json()) as GhRelease[])
+}
+
+const CACHE_KEY = 'getbox-releases'
+const CACHE_TTL = 10 * 60 * 1000
+
+type Cached = { at: number; releases: Release[] }
+
+export function readCachedReleases(): Cached | null {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw) as Cached
+    return Array.isArray(parsed.releases) ? parsed : null
+  } catch {
+    return null
+  }
+}
+
+export function isFresh(cached: Cached) {
+  return Date.now() - cached.at < CACHE_TTL
+}
+
+function writeCachedReleases(releases: Release[]) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), releases }))
+  } catch {
+    /* ignore */
+  }
+}
+
+/**
+ * Release list for the browser: our cached /api/releases endpoint first
+ * (avoids GitHub's 60 req/hour per-IP limit), GitHub directly as a fallback.
+ */
+export async function fetchReleases(): Promise<Release[]> {
+  let releases: Release[]
+  try {
+    const res = await fetch('/api/releases')
+    if (!res.ok || !res.headers.get('content-type')?.includes('application/json')) {
+      throw new Error(`/api/releases: ${res.status}`)
+    }
+    releases = (await res.json()) as Release[]
+  } catch {
+    releases = await fetchGithubReleases()
+  }
+  writeCachedReleases(releases)
+  return releases
 }
