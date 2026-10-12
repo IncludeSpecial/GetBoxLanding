@@ -31,6 +31,7 @@ const privacyRu: LegalDoc = {
         'В браузере может сохраняться выбранный язык интерфейса (localStorage). Это нужно только для удобства и не передаётся на наши серверы как учётная запись.',
         'Чтобы показать актуальные релизы, страница запрашивает список у нашего сервера (Vercel), который берёт его из публичного API GitHub. Если сервер недоступен, браузер обращается к api.github.com напрямую. Полученный список кэшируется в localStorage на несколько минут.',
         'Сайт размещён у хостинг-провайдера (Vercel). Провайдер может автоматически обрабатывать технические логи (IP, User-Agent, время запроса) в объёме, необходимом для работы и защиты сервиса — по своим правилам.',
+        'Для подсчёта посещений используется Vercel Web Analytics. Он не ставит cookie и не хранит IP-адреса: учитываются страница, источник перехода, страна, тип устройства и браузера в обезличенном виде. Посетители не отслеживаются между сайтами и между днями.',
         'Шрифты загружаются с того же домена, что и сайт; сторонние сервисы шрифтов не используются.',
       ],
     },
@@ -91,6 +92,7 @@ const privacyEn: LegalDoc = {
         'Your browser may store the selected UI language in localStorage. This is only for convenience and is not used as an account on our servers.',
         'To show current releases, the page requests the list from our server (Vercel), which takes it from the public GitHub API. If the server is unavailable, your browser calls api.github.com directly. The list is cached in localStorage for a few minutes.',
         'The site is hosted by a hosting provider (Vercel). The provider may process technical logs (IP, User-Agent, request time) as needed to operate and protect the service, under its own terms.',
+        'We count visits with Vercel Web Analytics. It sets no cookies and does not store IP addresses: it records the page, referrer, country, device and browser type in anonymized form. Visitors are not tracked across sites or across days.',
         'Fonts are served from the same domain as the site; no third-party font services are used.',
       ],
     },
@@ -140,7 +142,7 @@ const cookiesRu: LegalDoc = {
     {
       heading: 'Что мы используем',
       paragraphs: [
-        'Мы не размещаем рекламные или аналитические cookie-трекеры (Google Analytics, Meta Pixel и т.п.).',
+        'Мы не размещаем рекламные или аналитические cookie-трекеры (Google Analytics, Meta Pixel и т.п.). Для статистики посещений используется Vercel Web Analytics, который работает без cookie.',
         'Выбранный язык интерфейса сохраняется в localStorage браузера (ключ getbox-lang). Это не cookie в классическом смысле, но похожая технология хранения на устройстве.',
       ],
     },
@@ -173,7 +175,7 @@ const cookiesEn: LegalDoc = {
     {
       heading: 'What we use',
       paragraphs: [
-        'We do not place advertising or analytics cookie trackers (Google Analytics, Meta Pixel, etc.).',
+        'We do not place advertising or analytics cookie trackers (Google Analytics, Meta Pixel, etc.). Visit statistics come from Vercel Web Analytics, which works without cookies.',
         'The selected UI language is stored in browser localStorage (key getbox-lang). That is not a classic cookie, but a similar on-device storage technology.',
       ],
     },

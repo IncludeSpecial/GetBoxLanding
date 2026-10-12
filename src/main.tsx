@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
+import { inject } from '@vercel/analytics'
 import '@fontsource/ibm-plex-sans/400.css'
 import '@fontsource/ibm-plex-sans/500.css'
 import '@fontsource/ibm-plex-sans/600.css'
@@ -22,6 +23,9 @@ const app = (
     <App releases={window.__GETBOX_RELEASES__} />
   </StrictMode>
 )
+
+// Cookie-free page view stats; needs Web Analytics enabled in the Vercel project.
+inject()
 
 // Production pages are prerendered (scripts/prerender.mjs); dev serves an empty root.
 if (root.hasChildNodes()) {

@@ -57,3 +57,7 @@ npm run images
 
 Import GetBoxLanding → Framework: Vite → `npm run build` → `dist` → getbox.ne-nas.ru.  
 `vercel.json`: `cleanUrls` (отдаёт `privacy.html` по `/privacy`), редирект `/download/*` и кэш-заголовки для ассетов. Неизвестные пути отдают 404.
+
+## Аналитика
+
+Vercel Web Analytics (без cookie) подключён в `src/main.tsx`. Чтобы данные пошли, включите Analytics в настройках проекта на Vercel.
