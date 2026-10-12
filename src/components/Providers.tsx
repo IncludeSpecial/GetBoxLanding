@@ -20,7 +20,7 @@ export function Providers() {
 
         <ul className="provider-grid">
           {items.map((item) => (
-            <li key={item.tag} className="provider-card">
+            <li key={item.tag} className="provider-card" data-provider={item.tag}>
               <div className="provider-card__top">
                 <span className="provider-item__dot" aria-hidden="true" />
                 <span className="provider-item__tag mono">{item.tag}</span>
