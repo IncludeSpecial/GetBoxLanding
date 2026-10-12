@@ -10,7 +10,6 @@ import '@fontsource/ibm-plex-mono/500.css'
 import App from './App'
 import type { Release } from './config'
 import './styles.css'
-import './redesign.css'
 
 declare global {
   interface Window {

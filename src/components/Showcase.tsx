@@ -76,14 +76,6 @@ export function Showcase() {
                 className={`showcase__thumb${i === active ? ' is-active' : ''}`}
                 onClick={() => setActive(i)}
               >
-                <img
-                  src={shot(s.name).thumb}
-                  alt=""
-                  width={64}
-                  height={40}
-                  loading="lazy"
-                  decoding="async"
-                />
                 <span>{t(s.key)}</span>
               </button>
             ))}
