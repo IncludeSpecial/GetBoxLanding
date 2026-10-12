@@ -534,6 +534,7 @@ ul {
 
 .hero-mock__viewport img {
   width: 100%;
+  height: auto;
   aspect-ratio: 16 / 10;
   object-fit: cover;
   object-position: top left;
