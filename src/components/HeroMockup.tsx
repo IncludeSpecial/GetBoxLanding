@@ -3,7 +3,6 @@ import { shot } from '../screenshots'
 
 const main = shot('home-queue')
 const modal = shot('modal')
-const catalog = shot('catalog')
 
 /**
  * Perspective UI mockup — modern desktop-download hero pattern:
@@ -14,6 +13,7 @@ export function HeroMockup() {
 
   return (
     <div className="hero-mock">
+      <div className="hero-mock__glow" aria-hidden="true" />
       <div className="hero-mock__scene">
         <div className="hero-mock__main">
           <div className="hero-mock__pad">
@@ -45,10 +45,6 @@ export function HeroMockup() {
             <span className="mono">app · telegram</span>
           </div>
           <img src={modal['960']} alt="" loading="lazy" decoding="async" />
-        </aside>
-
-        <aside className="hero-mock__float hero-mock__float--shelf" aria-hidden="true">
-          <img src={catalog['960']} alt="" loading="lazy" decoding="async" />
         </aside>
       </div>
     </div>
