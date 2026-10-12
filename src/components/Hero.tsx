@@ -15,20 +15,26 @@ export function Hero() {
         <div className="hero__copy-inner">
           <p className="hero__kicker mono">{t('heroKicker')}</p>
 
-          <div className="hero__brand">
-            <Logo className="logo--hero" />
-            <h1 className="hero__name">{t('brandName')}</h1>
-          </div>
-
-          <p className="hero__sub">{t('brandSub')}</p>
+          <h1 className="hero__title">
+            <span className="hero__brand">
+              <Logo className="logo--hero" decorative />
+              <span className="hero__name">{t('brandName')}</span>
+            </span>{' '}
+            <span className="hero__sub">{t('brandSub')}</span>
+          </h1>
           <p className="hero__headline">{t('heroHeadline')}</p>
           <p className="hero__support">{t('heroSupport')}</p>
 
           <div className="hero__cta">
             <a className="btn btn--cta btn--lg" href={href} rel="noopener noreferrer">
-              {t('ctaDownload')}
+              {latest ? `${t('ctaDownload')} v${latest.version}` : t('ctaDownload')}
             </a>
-            <a className="btn btn--ghost btn--lg" href={GITHUB_URL} target="_blank" rel="noreferrer">
+            <a
+              className="btn btn--ghost btn--lg"
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noreferrer"
+            >
               {t('ctaGithub')}
             </a>
           </div>

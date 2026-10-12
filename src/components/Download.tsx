@@ -32,9 +32,7 @@ export function Download() {
         </aside>
 
         <div className="download__main">
-          {loading ? (
-            <p className="versions__status mono">{t('releasesLoading')}</p>
-          ) : null}
+          {loading ? <p className="versions__status mono">{t('releasesLoading')}</p> : null}
 
           {error ? (
             <p className="versions__status">
@@ -70,6 +68,7 @@ export function Download() {
                 ) : null}
               </p>
             ) : null}
+            <p className="download__hint">{t('smartscreenNote')}</p>
           </div>
 
           {older.length > 0 ? (

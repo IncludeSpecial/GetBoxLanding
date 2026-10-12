@@ -1,4 +1,9 @@
 import { useT } from '../I18nContext'
+import { shot } from '../screenshots'
+
+const main = shot('home-queue')
+const modal = shot('modal')
+const catalog = shot('catalog')
 
 /**
  * Perspective UI mockup — modern desktop-download hero pattern:
@@ -23,8 +28,10 @@ export function HeroMockup() {
               </div>
               <div className="hero-mock__viewport">
                 <img
-                  src="/screenshots/home-queue.png"
+                  src={main.src}
                   alt={t('heroShotAlt')}
+                  width={1920}
+                  height={963}
                   decoding="async"
                   fetchPriority="high"
                 />
@@ -37,11 +44,11 @@ export function HeroMockup() {
           <div className="hero-mock__float-chrome">
             <span className="mono">app · telegram</span>
           </div>
-          <img src="/screenshots/modal.png" alt="" loading="lazy" decoding="async" />
+          <img src={modal['960']} alt="" loading="lazy" decoding="async" />
         </aside>
 
         <aside className="hero-mock__float hero-mock__float--shelf" aria-hidden="true">
-          <img src="/screenshots/catalog.png" alt="" loading="lazy" decoding="async" />
+          <img src={catalog['960']} alt="" loading="lazy" decoding="async" />
         </aside>
       </div>
     </div>
