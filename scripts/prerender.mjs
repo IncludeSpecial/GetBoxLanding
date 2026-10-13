@@ -6,6 +6,7 @@ import { pathToFileURL } from 'node:url'
 
 const dist = path.resolve('dist')
 const ssrDir = path.resolve('dist-ssr')
+const SITE = 'https://getbox.ne-nas.ru'
 
 const {
   render,
@@ -62,6 +63,18 @@ function page(route) {
   html = setMeta(html, 'property', 'og:locale:alternate', OG_LOCALE[otherLang])
   html = setMeta(html, 'name', 'twitter:title', meta.title)
   html = setMeta(html, 'name', 'twitter:description', meta.description)
+  const ogImage = `${SITE}/${route.lang === 'en' ? 'og-en.jpg' : 'og.jpg'}`
+  html = setMeta(html, 'property', 'og:image', ogImage)
+  html = setMeta(html, 'property', 'og:image:secure_url', ogImage)
+  html = setMeta(html, 'name', 'twitter:image', ogImage)
+  html = setMeta(
+    html,
+    'property',
+    'og:image:alt',
+    route.lang === 'en'
+      ? 'GetBox — an app store for Windows'
+      : 'GetBox — магазин программ для Windows',
+  )
 
   const alternates = [
     ...meta.alternates.map((a) => `<link rel="alternate" hreflang="${a.lang}" href="${a.href}" />`),

@@ -88,8 +88,13 @@ node scripts/sync-app-screenshots.mjs ../GetBox   # или из локально
 npm run images                    # WebP: полный размер и -960 в public/screenshots/
 ```
 
-Список кадров — `SCREENSHOTS` в `scripts/sync-app-screenshots.mjs`, вкладки блока «Интерфейс» — `src/components/Showcase.tsx`.  
-`assets-src/og.png` — исходник OG-картинки, на сайте используется `public/og.jpg` (1200×630).
+Список кадров — `SCREENSHOTS` в `scripts/sync-app-screenshots.mjs`, вкладки блока «Интерфейс» — `src/components/Showcase.tsx`.
+
+## Бренд
+
+- `assets-src/brand/getbox-logo.svg` — логотип (Fluent-плитка с открытой коробкой и стрелкой), `getbox-logo-small.svg` — упрощённый вариант для 16–20 px (фавикон). В React он же — `src/components/Logo.tsx`; при правках меняйте оба.
+- Тот же логотип стоит в приложении (`data/logo.svg` в репозитории GetBox, из него собирается иконка exe).
+- Картинки для превью ссылок — `public/og.jpg` (RU) и `public/og-en.jpg` (EN), 1200×630. Шаблон — `assets-src/brand/og.html`, пересобрать: `npm run og` (нужен Chromium из Playwright или `CHROME_PATH`).
 
 ## Vercel
 

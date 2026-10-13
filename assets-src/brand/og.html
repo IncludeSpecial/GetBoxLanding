@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- Open Graph card template, rendered by scripts/render-og.mjs (1200×630). -->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face { font-family: Plex; font-weight: 400; src: url(../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-cyrillic-400-normal.woff2); unicode-range: U+0400-04FF; }
+      @font-face { font-family: Plex; font-weight: 400; src: url(../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2); }
+      @font-face { font-family: Plex; font-weight: 700; src: url(../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-cyrillic-700-normal.woff2); unicode-range: U+0400-04FF; }
+      @font-face { font-family: Plex; font-weight: 700; src: url(../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-700-normal.woff2); }
+      * { margin: 0; box-sizing: border-box; }
+      body {
+        width: 1200px; height: 630px; overflow: hidden; font-family: Plex, sans-serif; color: #dfe7ee;
+        background:
+          radial-gradient(ellipse 55% 70% at 78% 50%, rgba(102, 192, 244, 0.16), transparent 70%),
+          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px) 0 0 / 48px 48px,
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px) 0 0 / 48px 48px,
+          #0b1219;
+      }
+      .copy { position: absolute; left: 72px; top: 0; bottom: 0; width: 520px; display: flex; flex-direction: column; justify-content: center; }
+      .brand { display: flex; align-items: center; gap: 22px; margin-bottom: 30px; }
+      .brand img { width: 104px; height: 104px; filter: drop-shadow(0 12px 30px rgba(22, 99, 160, 0.55)); }
+      .brand b { font-size: 76px; letter-spacing: -0.03em; color: #fff; }
+      h1 { font-size: 40px; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 22px; color: #fff; }
+      p { font-size: 23px; line-height: 1.45; color: #93a3b3; }
+      .shot { position: absolute; left: 620px; top: 78px; width: 760px; padding: 8px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.04); transform: perspective(1600px) rotateY(-14deg) rotateX(4deg); box-shadow: 0 40px 90px rgba(0, 0, 0, 0.6); }
+      .shot img { display: block; width: 100%; border-radius: 8px; }
+    </style>
+  </head>
+  <body>
+    <div class="copy">
+      <div class="brand"><img src="getbox-logo.svg" alt="" /><b>GetBox</b></div>
+      <h1 id="title"></h1>
+      <p id="text"></p>
+    </div>
+    <div class="shot"><img src="../screenshots/home.webp" alt="" /></div>
+  </body>
+</html>
