@@ -46,7 +46,8 @@ export function Nav({ home = false }: Props) {
       >
         <a href={`${prefix}#features`}>{t('navFeatures')}</a>
         <a href={`${prefix}#showcase`}>{t('navShowcase')}</a>
-        <a href={`${prefix}#providers`}>{t('navProviders')}</a>
+        <a href={`${prefix}#safety`}>{t('navSafety')}</a>
+        <a href={`${prefix}#faq`}>{t('navFaq')}</a>
         <a href={`${prefix}#download`}>{t('navDownload')}</a>
       </nav>
 

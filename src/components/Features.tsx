@@ -1,4 +1,7 @@
+import { CONTENT } from '../content'
 import { useT } from '../I18nContext'
+import { useCatalogStats } from '../SiteData'
+import { Icon } from './Icon'
 
 const ICONS = [
   'firefox',
@@ -16,13 +19,9 @@ const ICONS = [
 ] as const
 
 export function Features() {
-  const { t } = useT()
-
-  const items = [
-    { title: t('feature1Title'), text: t('feature1Text'), icon: 'vscode' },
-    { title: t('feature2Title'), text: t('feature2Text'), icon: 'steam' },
-    { title: t('feature3Title'), text: t('feature3Text'), icon: 'docker' },
-  ]
+  const { lang, t } = useT()
+  const stats = useCatalogStats()
+  const items = CONTENT[lang].features
 
   return (
     <section className="section features" id="features">
@@ -31,6 +30,27 @@ export function Features() {
           <h2 className="section__title">{t('featuresTitle')}</h2>
           <p className="section__lead">{t('featuresLead')}</p>
         </header>
+
+        {stats ? (
+          <dl className="stats">
+            <div>
+              <dt>{t('statApps')}</dt>
+              <dd>{stats.apps}</dd>
+            </div>
+            <div>
+              <dt>{t('statPackages')}</dt>
+              <dd>{t('statPackagesValue')}</dd>
+            </div>
+            <div>
+              <dt>{t('statProfiles')}</dt>
+              <dd>{stats.profiles}</dd>
+            </div>
+            <div>
+              <dt>{t('statCategories')}</dt>
+              <dd>{stats.categories}</dd>
+            </div>
+          </dl>
+        ) : null}
 
         <div className="shelf" aria-hidden="true">
           <div className="shelf__track">
@@ -47,16 +67,10 @@ export function Features() {
             <article key={item.title} className="feature-item">
               <div className="feature-item__top">
                 <span className="feature-item__tile">
-                  <img
-                    className="feature-item__icon"
-                    src={`/icons/${item.icon}.svg`}
-                    alt=""
-                    width={28}
-                    height={28}
-                  />
+                  <Icon name={item.icon} className="feature-item__icon" />
                 </span>
                 <span className="feature-item__num mono" aria-hidden="true">
-                  0{i + 1}
+                  {String(i + 1).padStart(2, '0')}
                 </span>
               </div>
               <h3>{item.title}</h3>

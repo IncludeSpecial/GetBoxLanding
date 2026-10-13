@@ -14,7 +14,7 @@ export type LegalDoc = {
 
 const privacyRu: LegalDoc = {
   title: 'Политика конфиденциальности',
-  updated: '12 октября 2026',
+  updated: '13 октября 2026',
   intro:
     'Эта политика описывает, какие данные обрабатываются при посещении сайта GetBox и при использовании приложения GetBox. Мы стараемся собирать минимум и не продаём персональные данные.',
   blocks: [
@@ -41,7 +41,8 @@ const privacyRu: LegalDoc = {
         'Приложение работает на вашем компьютере. Установка программ выполняется локально через каталог GetBox и менеджеры пакетов Scoop, winget и Chocolatey.',
         'GetBox не требует аккаунта GetBox. Мы не получаем содержимое вашей установки как облачный сервис учёта.',
         'При загрузке установщиков и пакетов ваш компьютер обращается к официальным источникам и репозиториям выбранных провайдеров. На эти сервисы распространяются их собственные политики.',
-        'Технические данные (пути, очередь установок, кэш каталога) хранятся локально на устройстве в рамках обычной работы приложения.',
+        'Чтобы проверить новые версии самого GetBox (при запуске и раз в 6 часов, начиная с 1.3.0), приложение обращается к api.github.com и скачивает обновление с GitHub Releases. Иконки программ загружаются с cdn.jsdelivr.net. Эти запросы не содержат данных учётной записи — её у GetBox нет.',
+        'Технические данные (пути, очередь установок, кэш каталога, история обновлений, настройки внешнего вида) хранятся локально в %LOCALAPPDATA%\\GetBox\\ и никуда не отправляются.',
       ],
     },
     {
@@ -75,7 +76,7 @@ const privacyRu: LegalDoc = {
 
 const privacyEn: LegalDoc = {
   title: 'Privacy Policy',
-  updated: 'October 12, 2026',
+  updated: 'October 13, 2026',
   intro:
     'This policy explains what data is processed when you visit the GetBox website and use the GetBox app. We aim to collect as little as possible and do not sell personal data.',
   blocks: [
@@ -102,7 +103,8 @@ const privacyEn: LegalDoc = {
         'The app runs on your computer. Software installs happen locally via the GetBox catalog and package managers Scoop, winget, and Chocolatey.',
         'GetBox does not require a GetBox account. We do not receive your install activity as a cloud analytics account.',
         'When downloading installers and packages, your computer contacts official sources and repositories of the chosen providers. Those services have their own policies.',
-        'Technical data (paths, install queue, catalog cache) stays on the device as part of normal app operation.',
+        'To check for new versions of GetBox itself (at launch and every 6 hours, from 1.3.0 on), the app calls api.github.com and downloads the update from GitHub Releases. Program icons are loaded from cdn.jsdelivr.net. These requests carry no account data — GetBox has no accounts.',
+        'Technical data (paths, install queue, catalog cache, update history, appearance settings) stays locally in %LOCALAPPDATA%\\GetBox\\ and is not sent anywhere.',
       ],
     },
     {

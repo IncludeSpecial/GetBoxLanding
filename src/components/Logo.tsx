@@ -7,43 +7,48 @@ type Props = {
   decorative?: boolean
 }
 
-/** GetBox mark — open package + get-arrow */
+/**
+ * GetBox mark — Fluent-style tile with an open box and a download arrow.
+ * Master file: assets-src/brand/getbox-logo.svg (keep in sync).
+ */
 export function Logo({ className = '', title = 'GetBox', decorative = false }: Props) {
   const uid = useId().replace(/:/g, '')
-  const face = `gbFace-${uid}`
-  const lid = `gbLid-${uid}`
+  const tile = `gbTile-${uid}`
+  const shine = `gbShine-${uid}`
+  const right = `gbRight-${uid}`
 
   return (
     <svg
       className={`logo ${className}`}
-      viewBox="0 0 40 40"
-      fill="none"
+      viewBox="0 0 64 64"
       xmlns="http://www.w3.org/2000/svg"
       {...(decorative ? { 'aria-hidden': true } : { role: 'img', 'aria-label': title })}
     >
       <defs>
-        <linearGradient id={face} x1="8" y1="6" x2="34" y2="36" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#2b8fc4" />
-          <stop offset="1" stopColor="#155a86" />
+        <linearGradient id={tile} x1="8" y1="2" x2="56" y2="62" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#4cb8f2" />
+          <stop offset="1" stopColor="#1663a0" />
         </linearGradient>
-        <linearGradient id={lid} x1="6" y1="8" x2="28" y2="18" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#66c0f4" />
-          <stop offset="1" stopColor="#3a9fd4" />
+        <linearGradient id={shine} x1="32" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#fff" stopOpacity=".22" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id={right} x1="32" y1="30" x2="50" y2="56" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#e3f2fd" />
+          <stop offset="1" stopColor="#b9dcf4" />
         </linearGradient>
       </defs>
-      <rect width="40" height="40" rx="8" fill="#0d1a24" />
-      <rect x="1.5" y="1.5" width="37" height="37" rx="6.5" stroke="#1e4a66" strokeWidth="1" />
+      <rect width="64" height="64" rx="14" fill={`url(#${tile})`} />
+      <rect width="64" height="64" rx="14" fill={`url(#${shine})`} />
+      <ellipse cx="32" cy="55.5" rx="17" ry="3.2" fill="#0a3a5e" opacity=".35" />
+      <path d="M13 29 L32 38.5 L32 56 L13 46.5 Z" fill="#fff" />
+      <path d="M51 29 L32 38.5 L32 56 L51 46.5 Z" fill={`url(#${right})`} />
+      <path d="M13 29 L32 19.5 L51 29 L32 38.5 Z" fill="#0f4f80" />
       <path
-        d="M8 16.5 L20 10.5 L32 16.5 L32 28.5 L20 34.5 L8 28.5 Z"
-        fill={`url(#${face})`}
-        opacity="0.95"
-      />
-      <path d="M11.5 18.2 L20 13.8 L28.5 18.2 L28.5 26.8 L20 31.2 L11.5 26.8 Z" fill="#0b1219" />
-      <path d="M8 16.5 L20 10.5 L26 7.2 L14 13.2 Z" fill={`url(#${lid})`} />
-      <path
-        d="M20 15.2 V24.2 M20 24.2 L16.2 20.4 M20 24.2 L23.8 20.4"
-        stroke="#d2efa4"
-        strokeWidth="2.2"
+        d="M32 7 V33 M23.5 24.5 L32 33 L40.5 24.5"
+        fill="none"
+        stroke="#fff"
+        strokeWidth="6"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
