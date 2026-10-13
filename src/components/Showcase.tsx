@@ -2,11 +2,15 @@ import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { useT } from '../I18nContext'
 import { shot } from '../screenshots'
 
+// Screenshots from the GetBox repo: `npm run sync:screenshots && npm run images`.
 const SHOTS = [
   { name: 'home', key: 'shotHome' as const },
   { name: 'catalog', key: 'shotCatalog' as const },
-  { name: 'modal', key: 'shotModal' as const },
+  { name: 'details', key: 'shotDetails' as const },
+  { name: 'queue', key: 'shotQueue' as const },
+  { name: 'updates', key: 'shotUpdates' as const },
   { name: 'packages', key: 'shotPackages' as const },
+  { name: 'themes', key: 'shotThemes' as const },
 ]
 
 export function Showcase() {
@@ -90,21 +94,13 @@ export function Showcase() {
           >
             <div className="showcase__pad">
               <div className="showcase__bezel">
-                <div className="showcase__titlebar" aria-hidden="true">
-                  <span className="mono">GetBox — {t(current.key)}</span>
-                  <span className="showcase__win">
-                    <i />
-                    <i />
-                    <i />
-                  </span>
-                </div>
                 <img
                   src={img.src}
                   srcSet={img.srcSet}
                   sizes="(max-width: 900px) 100vw, 1100px"
                   alt={t(current.key)}
-                  width={1920}
-                  height={950}
+                  width={1440}
+                  height={900}
                   loading="lazy"
                   decoding="async"
                 />

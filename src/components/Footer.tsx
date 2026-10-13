@@ -22,9 +22,17 @@ export function Footer() {
             <a href={buildPath(lang, 'cookies')}>{t('footerCookies')}</a>
             <a href={buildPath(lang, 'terms')}>{t('footerTerms')}</a>
           </nav>
-          <a href={GITHUB_URL} target="_blank" rel="noreferrer">
-            GitHub
-          </a>
+          <nav className="footer__links" aria-label="GitHub">
+            <a href={GITHUB_URL} target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <a href={`${GITHUB_URL}/blob/main/CHANGELOG.md`} target="_blank" rel="noreferrer">
+              {t('footerChangelog')}
+            </a>
+            <a href={`${GITHUB_URL}/issues/new`} target="_blank" rel="noreferrer">
+              {t('footerIssues')}
+            </a>
+          </nav>
           <span>{t('footerRights')}</span>
         </div>
       </div>

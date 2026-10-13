@@ -7,12 +7,12 @@ const HOME = {
   ru: {
     title: 'GetBox — магазин программ для Windows',
     description:
-      'GetBox — локальный магазин программ для Windows. Каталог, профили установки, Scoop, winget и Chocolatey — без командной строки.',
+      'GetBox — магазин программ для Windows: официальные установщики, проверка SHA256, обновления и откат, winget, Scoop и Chocolatey в одном окне.',
   },
   en: {
     title: 'GetBox — Windows software store',
     description:
-      'GetBox is a local software store for Windows. Curated catalog, install profiles, Scoop, winget, and Chocolatey — no command line.',
+      'GetBox is an app store for Windows: official installers, SHA256 checks, updates and rollback, plus winget, Scoop and Chocolatey in one window.',
   },
 } satisfies Record<Lang, { title: string; description: string }>
 

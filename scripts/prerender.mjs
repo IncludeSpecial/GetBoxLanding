@@ -7,19 +7,34 @@ import { pathToFileURL } from 'node:url'
 const dist = path.resolve('dist')
 const ssrDir = path.resolve('dist-ssr')
 
-const { render, pageMeta, OG_LOCALE, allRoutes, buildPath, fetchGithubReleases } = await import(
-  pathToFileURL(path.join(ssrDir, 'entry-server.js')).href
-)
+const {
+  render,
+  pageMeta,
+  OG_LOCALE,
+  allRoutes,
+  buildPath,
+  fetchGithubReleases,
+  fetchCatalogStats,
+} = await import(pathToFileURL(path.join(ssrDir, 'entry-server.js')).href)
 
 let releases = []
 try {
-  releases = await fetchGithubReleases(process.env.GITHUB_TOKEN)
+  releases = await fetchGithubReleases(process.env.GITHUB_TOKEN, { checksum: true })
   console.log(`prerender: ${releases.length} releases from GitHub`)
 } catch (err) {
   console.warn(
     `prerender: releases unavailable (${err.message}), the page will load them at runtime`,
   )
 }
+
+let stats = null
+try {
+  stats = await fetchCatalogStats()
+  console.log(`prerender: catalog ${stats.apps} apps, ${stats.profiles} profiles`)
+} catch (err) {
+  console.warn(`prerender: catalog stats unavailable (${err.message}), numbers are hidden`)
+}
+const data = { releases, stats }
 
 const template = await readFile(path.join(dist, 'index.html'), 'utf8')
 
@@ -52,11 +67,11 @@ function page(route) {
     ...meta.alternates.map((a) => `<link rel="alternate" hreflang="${a.lang}" href="${a.href}" />`),
     `<link rel="alternate" hreflang="x-default" href="${meta.alternates.find((a) => a.lang === 'ru').href}" />`,
   ]
-  const data = `<script>window.__GETBOX_RELEASES__=${JSON.stringify(releases).replace(/</g, '\\u003c')}</script>`
+  const script = `<script>window.__GETBOX_DATA__=${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`
   html = html.replace('  </head>', `    ${alternates.join('\n    ')}\n  </head>`)
   html = html.replace(
     '<div id="root"></div>',
-    `<div id="root">${render(buildPath(route.lang, route.legalId), releases)}</div>\n    ${data}`,
+    `<div id="root">${render(buildPath(route.lang, route.legalId), data)}</div>\n    ${script}`,
   )
   return html
 }

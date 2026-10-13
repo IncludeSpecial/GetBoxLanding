@@ -7,7 +7,7 @@ import { fetchGithubReleases } from '../src/releases'
  */
 export async function GET() {
   try {
-    const releases = await fetchGithubReleases(process.env.GITHUB_TOKEN)
+    const releases = await fetchGithubReleases(process.env.GITHUB_TOKEN, { checksum: true })
     return Response.json(releases, {
       headers: {
         'Cache-Control': 'public, s-maxage=600, stale-while-revalidate=86400',
