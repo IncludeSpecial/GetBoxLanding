@@ -1,4 +1,4 @@
-import { fetchGithubReleases } from '../src/releases'
+import { fetchGithubReleases } from '../src/releases.js'
 
 /**
  * Vercel Function: GitHub release list, cached on Vercel's CDN so visitors

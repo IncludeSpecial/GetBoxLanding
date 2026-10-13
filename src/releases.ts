@@ -1,4 +1,4 @@
-import { ASSET_MATCH, GITHUB_RELEASES_API, type Release, type ReleaseChanges } from './config'
+import { ASSET_MATCH, GITHUB_RELEASES_API, type Release, type ReleaseChanges } from './config.js'
 
 type GhAsset = {
   name: string
