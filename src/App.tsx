@@ -4,6 +4,7 @@ import { I18nContext } from './I18nContext'
 import { browserLang, saveLang, savedLang, translate, type DictKey, type Lang } from './i18n'
 import { pageMeta } from './i18n-meta'
 import { ReleaseProvider } from './ReleaseContext'
+import { CatalogStatsContext, type CatalogStats } from './SiteData'
 import { buildPath, parsePath } from './routes'
 import { navigate, usePathname } from './usePathname'
 import { Nav } from './components/Nav'
@@ -12,18 +13,26 @@ import { Features } from './components/Features'
 import { Showcase } from './components/Showcase'
 import { Providers } from './components/Providers'
 import { Download } from './components/Download'
+import { Faq } from './components/Faq'
+import { Safety } from './components/Safety'
 import { Footer } from './components/Footer'
 import { LegalPage } from './components/LegalPage'
 
 const BOT_UA = /bot|crawl|spider|slurp|facebookexternalhit|lighthouse/i
 
+/** Fetched at build time and embedded into the prerendered HTML. */
+export type SiteData = {
+  releases: Release[]
+  stats: CatalogStats | null
+}
+
 type Props = {
   /** Current URL path; required for server rendering. */
   path?: string
-  releases?: Release[]
+  data?: SiteData
 }
 
-export default function App({ path, releases }: Props) {
+export default function App({ path, data }: Props) {
   const pathname = usePathname(path)
   const route = parsePath(pathname)
   const { lang, legalId } = route
@@ -70,25 +79,29 @@ export default function App({ path, releases }: Props) {
 
   return (
     <I18nContext.Provider value={i18n}>
-      <ReleaseProvider initial={releases}>
-        <div className="page">
-          <Nav home={Boolean(legalId)} />
-          <main>
-            {legalId ? (
-              <LegalPage id={legalId} />
-            ) : (
-              <>
-                <Hero />
-                <Features />
-                <Showcase />
-                <Providers />
-                <Download />
-              </>
-            )}
-          </main>
-          <Footer />
-        </div>
-      </ReleaseProvider>
+      <CatalogStatsContext.Provider value={data?.stats ?? null}>
+        <ReleaseProvider initial={data?.releases}>
+          <div className="page">
+            <Nav home={Boolean(legalId)} />
+            <main>
+              {legalId ? (
+                <LegalPage id={legalId} />
+              ) : (
+                <>
+                  <Hero />
+                  <Features />
+                  <Showcase />
+                  <Safety />
+                  <Providers />
+                  <Download />
+                  <Faq />
+                </>
+              )}
+            </main>
+            <Footer />
+          </div>
+        </ReleaseProvider>
+      </CatalogStatsContext.Provider>
     </I18nContext.Provider>
   )
 }

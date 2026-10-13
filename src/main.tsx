@@ -8,19 +8,19 @@ import '@fontsource/ibm-plex-sans/700.css'
 import '@fontsource/ibm-plex-mono/400.css'
 import '@fontsource/ibm-plex-mono/500.css'
 import App from './App'
-import type { Release } from './config'
+import type { SiteData } from './App'
 import './styles.css'
 
 declare global {
   interface Window {
-    __GETBOX_RELEASES__?: Release[]
+    __GETBOX_DATA__?: SiteData
   }
 }
 
 const root = document.getElementById('root')!
 const app = (
   <StrictMode>
-    <App releases={window.__GETBOX_RELEASES__} />
+    <App data={window.__GETBOX_DATA__} />
   </StrictMode>
 )
 

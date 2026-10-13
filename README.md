@@ -31,26 +31,64 @@ npm run typecheck
 
 При первом заходе на русскую страницу из нерусскоязычного браузера сайт переключается на `/en` (кроме ботов). Выбор в переключателе RU/EN запоминается.
 
+## Контент и связь с приложением
+
+Тексты лендинга повторяют README приложения ([RU](https://github.com/IncludeSpecial/GetBox/blob/main/README.md) / [EN](https://github.com/IncludeSpecial/GetBox/blob/main/README.en.md)). Когда в GetBox появляются новые возможности, обновите:
+
+| Что                                                   | Где                                          |
+| ----------------------------------------------------- | -------------------------------------------- |
+| Карточки «Возможности», «Безопасно по умолчанию», FAQ | `src/content.ts`                             |
+| Короткие строки (hero, навигация, кнопки)             | `src/i18n.ts`                                |
+| Политика конфиденциальности — что делает приложение   | `src/legal/content.ts`                       |
+| Скриншоты                                             | `npm run sync:screenshots && npm run images` |
+
+Числа в блоке статистики (программы в каталоге, профили, категории) подтягиваются при сборке из `data/*.json` репозитория GetBox; если он недоступен, блок просто скрывается.
+
 ## Релизы
 
-Список берётся из GitHub Releases. Создал Release с `*-portable.exe` → на сайте сам появится.
+Список берётся из GitHub Releases: релиз с `*-portable.exe` появляется на сайте сам, черновики и pre-release (канал «Бета») пропускаются.
 
-- `api/releases.ts` — функция Vercel: запрашивает GitHub API и кэширует ответ на CDN (10 минут), чтобы посетители не упирались в лимит GitHub 60 запросов/час на IP. Можно задать `GITHUB_TOKEN` в переменных окружения Vercel.
-- Браузер сначала идёт в `/api/releases`, при ошибке — напрямую в GitHub; ответ кэшируется в localStorage.
-- Актуальный релиз встраивается в HTML при сборке, поэтому кнопка «Скачать» работает сразу, без ожидания API. Новый релиз подхватится на клиенте и без пересборки.
+- **Кнопка «Скачать»** ведёт прямо на exe последнего релиза; старые версии — в блоке «Предыдущие версии».
+- **«Что нового в vX»** — описание релиза (секция `CHANGELOG.md` приложения), разбитое по заголовкам `###`.
+- **SHA256** — содержимое `GetBox-<версия>-portable.exe.sha256` из релиза (с 1.3.0) с кнопкой «Скопировать». Файл читается на сервере (в `/api/releases` и при сборке): браузеру GitHub его не отдаёт из-за CORS, поэтому в запасном режиме показывается ссылка на файл.
 
-CTA качает актуальную версию напрямую с GitHub. Старые версии — в свёрнутом блоке «Предыдущие версии».  
+Как данные попадают на страницу:
+
+1. При сборке `scripts/prerender.mjs` встраивает релизы в HTML — кнопка работает сразу, без JavaScript.
+2. В браузере страница обновляет список через `api/releases.ts` — функцию Vercel с кэшем на CDN 10 минут (не упираемся в лимит GitHub 60 запросов/час на IP; можно задать `GITHUB_TOKEN` в переменных Vercel). Если она недоступна — напрямую из GitHub. Ответ кэшируется в localStorage на 10 минут.
+3. Workflow `release-sync` раз в час сравнивает версию в HTML живого сайта с последним релизом и, если они разошлись, вызывает Deploy Hook Vercel — сайт пересобирается со свежими данными.
+
+**Настройка пересборки:** Vercel → Project → Settings → Git → Deploy Hooks → создать хук для `main` → добавить его в секреты этого репозитория как `VERCEL_DEPLOY_HOOK_URL`. Без секрета workflow только пишет в лог, что версия отстаёт.
+
+Чтобы сайт обновлялся сразу после релиза, а не в течение часа, добавьте в конец `jobs.release.steps` файла `release.yml` приложения шаг (нужен токен с правом `repo` на GetBoxLanding в секрете `LANDING_DISPATCH_TOKEN`):
+
+```yaml
+- name: Update landing
+  env:
+    LANDING_TOKEN: ${{ secrets.LANDING_DISPATCH_TOKEN }}
+  if: env.LANDING_TOKEN != ''
+  shell: bash
+  run: >
+    curl -fsS -X POST
+    -H "Authorization: Bearer $LANDING_TOKEN"
+    -H "Accept: application/vnd.github+json"
+    https://api.github.com/repos/IncludeSpecial/GetBoxLanding/dispatches
+    -d '{"event_type":"getbox-release"}'
+```
+
 Бинарники в репозиторий не кладём — `/download/*` перенаправляется на GitHub Releases.
 
 ## Скриншоты
 
-Исходники в PNG лежат в `assets-src/screenshots/`. После замены запустить:
+Скриншоты интерфейса берутся из `docs/screenshots/` репозитория GetBox:
 
 ```bash
-npm run images
+npm run sync:screenshots          # скачать с GitHub (ветка main)
+node scripts/sync-app-screenshots.mjs ../GetBox   # или из локального клона
+npm run images                    # WebP: полный размер и -960 в public/screenshots/
 ```
 
-Скрипт создаёт в `public/screenshots/` WebP: полный размер и `-960` для узких экранов.  
+Список кадров — `SCREENSHOTS` в `scripts/sync-app-screenshots.mjs`, вкладки блока «Интерфейс» — `src/components/Showcase.tsx`.  
 `assets-src/og.png` — исходник OG-картинки, на сайте используется `public/og.jpg` (1200×630).
 
 ## Vercel
